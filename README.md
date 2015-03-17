@@ -1,8 +1,10 @@
 [![License GPL 3][badge-license]](http://www.gnu.org/licenses/gpl-3.0.txt)
-[![Gittip](http://img.shields.io/gittip/bbatsov.svg)](https://www.gittip.com/bbatsov/)
+[![Gratipay](http://img.shields.io/gratipay/bbatsov.svg)](https://gratipay.com/bbatsov/)
 
 Emacs Prelude
 =============
+
+[![Join the chat at https://gitter.im/bbatsov/prelude](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bbatsov/prelude?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Prelude is an Emacs distribution that aims to enhance the default
 Emacs experience.  Prelude alters a lot of the default settings,
@@ -13,48 +15,48 @@ Emacs power users.
 
 Prelude is compatible **ONLY with GNU Emacs 24.x**. In general you're
 advised to always run Prelude with the latest Emacs - currently
-**24.3**.
+**24.4**.
 
 **Table of Contents**
 
 - [Fast Forward](#fast-forward)
 - [Installing Emacs 24](#installing-emacs-24)
 - [Installation](#installation)
-	- [Automated](#automated)
-		- [Via Curl](#via-curl)
-		- [Via Wget](#via-wget)
-	- [Manual](#manual)
+    - [Automated](#automated)
+        - [Via Curl](#via-curl)
+        - [Via Wget](#via-wget)
+    - [Manual](#manual)
 - [Updating Prelude](#updating-prelude)
-	- [Manual update](#manual-update)
-		- [Update all bundled packages](#update-all-bundled-packages)
-		- [Update Prelude's code](#update-preludes-code)
-		- [Restart Prelude](#restart-prelude)
-	- [Automatic update](#automatic-update)
+    - [Manual update](#manual-update)
+        - [Update all bundled packages](#update-all-bundled-packages)
+        - [Update Prelude's code](#update-preludes-code)
+        - [Restart Prelude](#restart-prelude)
+    - [Automatic update](#automatic-update)
 - [Enabling additional modules](#enabling-additional-modules)
 - [Running](#running)
 - [Getting to know Prelude](#getting-to-know-prelude)
-	- [Keymap](#keymap)
-		- [Global](#global)
-		- [Prelude Mode](#prelude-mode)
-		- [OSX modifier keys](#osx-modifier-keys)
-		- [Projectile](#projectile)
-		- [Helm](#helm)
-		- [Key-chords](#key-chords)
-			- [Disabling key-chords](#disabling-key-chords)
+    - [Keymap](#keymap)
+        - [Global](#global)
+        - [Prelude Mode](#prelude-mode)
+        - [OSX modifier keys](#osx-modifier-keys)
+        - [Projectile](#projectile)
+        - [Helm](#helm)
+        - [Key-chords](#key-chords)
+            - [Disabling key-chords](#disabling-key-chords)
 - [Automatic package installation](#automatic-package-installation)
-	- [Color Themes](#color-themes)
-	- [Personalizing](#personalizing)
-		- [Disabling whitespace-mode](#disabling-whitespace-mode)
-		- [Disable flyspell-mode](#disable-flyspell-mode)
+    - [Color Themes](#color-themes)
+    - [Personalizing](#personalizing)
+        - [Disabling whitespace-mode](#disabling-whitespace-mode)
+        - [Disable flyspell-mode](#disable-flyspell-mode)
 - [Caveats & Pitfalls](#caveats--pitfalls)
-	- [Updating bundled packages](#updating-bundled-packages)
-	- [Problems with flyspell-mode](#problems-with-flyspell-mode)
-	- [Ugly colors in the terminal Emacs version](#ugly-colors-in-the-terminal-emacs-version)
-	- [MELPA error on initial startup](#melpa-error-on-initial-startup)
-	- [No arrow navigation in editor buffers](#no-arrow-navigation-in-editor-buffers)
-	- [Customized C-a behavior](#customized-c-a-behavior)
-	- [Poor ido matching performance on large datasets](#poor-ido-matching-performance-on-large-datasets)
-	- [Windows compatibility](#windows-compatibility)
+    - [Updating bundled packages](#updating-bundled-packages)
+    - [Problems with flyspell-mode](#problems-with-flyspell-mode)
+    - [Ugly colors in the terminal Emacs version](#ugly-colors-in-the-terminal-emacs-version)
+    - [MELPA error on initial startup](#melpa-error-on-initial-startup)
+    - [Warnings on arrow navigation in editor buffers](#warnings-on-navigation-in-editor-buffers)
+    - [Customized C-a behavior](#customized-c-a-behavior)
+    - [Poor ido matching performance on large datasets](#poor-ido-matching-performance-on-large-datasets)
+    - [Windows compatibility](#windows-compatibility)
 - [Known issues](#known-issues)
 - [Support](#support)
 - [Contributors](#contributors)
@@ -179,6 +181,7 @@ By default most of the modules that ship with Prelude are not loaded. For more i
 (require 'prelude-emacs-lisp)
 (require 'prelude-erc)
 ;; (require 'prelude-erlang)
+;; (require 'prelude-elixir)
 ;; (require 'prelude-haskell)
 (require 'prelude-js)
 ;; (require 'prelude-latex)
@@ -233,6 +236,14 @@ alias vi='emacsclient -t'
 
 The last two aliases are helpful if you're used to editing files from
 the command line using `vi(m)`.
+
+Also you can open a file with cursor on choosen line:
+
+```bash
+emacsclient somefile:1234
+```
+
+This will open file 'somefile' and set cursor on line 1234.
 
 ## Getting to know Prelude
 
@@ -406,6 +417,10 @@ Key Binding        | Description
 If you prefer Ido in everywhere, you should not add `prelude-helm-everywhere`, so you can use Helm along with Ido and Prelude's default commands.
 
 You can always reactivate Helm with `(prelude-global-helm-global-mode-on)`.
+
+**NOTICE**: In `helm-M-x`, you have to pass prefix argument *AFTER* you run `helm-M-x`,
+because your prefix argument will be displayed in the modeline when in `helm-M-x`
+buffer. Passing prefix argument **BEFORE** =helm-M-x= **has no effect**.
 
 
 #### Key-chords
@@ -625,11 +640,11 @@ Prelude swaps the default `ido` flex matching with the more powerful
 
 The sorting algorithm `flx` uses is more complex, but yields better results.
 
-On slower machines, it may be necessary to lower `flx-ido-threshhold` to
+On slower machines, it may be necessary to lower `flx-ido-threshold` to
 ensure a smooth experience.
 
 ```lisp
-(setq flx-ido-threshhold 1000)
+(setq flx-ido-threshold 1000)
 ```
 
 You can always disable the improved sorting algorithm all together like this:
