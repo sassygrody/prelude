@@ -10,9 +10,6 @@
 
 (setq my-packages '(flymake-easy
                     sml-mode
-                    auto-complete
-                    ac-cider
-                    ac-js2
                     rspec-mode
                     powerline
                     tidy
@@ -22,9 +19,9 @@
                     popwin
                     (org (20140210))
                     js3-mode
-                    elixir-mode
                     company-inf-ruby
                     company-ghc
+                    helm-ag
                     helm-rails
                     helm-robe
                     helm-git
